@@ -1,0 +1,350 @@
+---
+title: "EMPLOYMENT"
+author: "haila"
+date: '`r Sys.Date()`'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+library(readxl)
+library(tidyverse)
+```
+
+
+```{r}
+library(readxl)
+library(tidyverse)
+
+Employment_data <- read_excel("C:/Users/admin/Desktop/business analytics/emp.xlsx")
+```
+
+
+```{r}
+#We chose the x data set from y database. (Description of the variables in the data set). First, we wanted to analyse the average number of males and females employed in each sector (to check if the numeric in the data set is number of people). To do this, we used mean() which directly gives us the value and summarise() to help present it better. While initially, the straightforward way to do this is to run each mean, note down values and compare, we tried combining all of them in one summarise function to make code concise and use the pipe operator.
+
+
+# Now we calculate the mean/average for a specific column using the mean() function. The "$" sign is used to select a specific column. Here, we select the column "Male primary sector ALL." Instead of running the mean function for each column (primary, secondary, and tertiary), we use the summarise() function and pipe operator %>% to calculate all averages in one go. The summarize() function is used for computing summary statistics like mean, median, etc. Here we used it for mean. The pipe operator helps to chain multiple operations together in an efficient manner. The argument na.rm= TRUE is used to ignore any missing values in the dataset.
+
+summarise(Employment_data, Average = mean(Employment_data$`Male Primary  Sector ALL`))
+```
+```{r}
+summarise(Employment_data, Average = mean(Employment_data$`Male Secondary  Sector ALL`))
+```
+```{r}
+```
+
+
+```{r}
+summarise(Employment_data, Average = mean(Employment_data$`Male Tertiary  Sector ALL`))
+```
+```{r}
+#While from the results of the above code, we know there are no NA values, we are adding na.rm = TRUE since that is the sure way to go about this, in case any discrepancies may arise.
+
+Employment_data %>%
+  summarise(Male_Primary_Average = mean(`Male Primary  Sector ALL`, na.rm = TRUE),
+            Male_Secondary_Average = mean(`Male Secondary  Sector ALL`, na.rm = TRUE),
+            Male_Tertiary_Average = mean(`Male Tertiary  Sector ALL`, na.rm = TRUE))
+```
+```{r}
+Employment_data %>%
+  summarise(Female_Primary_Average = mean(`Female Primary  Sector ALL`, na.rm = TRUE),
+            Female_Secondary_Average = mean(`Female Secondary  Sector ALL`, na.rm = TRUE),
+            Female_Tertiary_Average = mean(`Female Tertiary Sector ALL`, na.rm = TRUE))
+```
+```{r}
+#Separating them into two codes for better visibility of output in the RMD file.
+#Analysis of results: The first Table shows average of  369.2 i.e. approximately 369 males are employed in the primary sector.The second table shows average of 250.0167 i.e.  about 250 males are employed in the secondary sector.The third table shows an average of 380.6333 i.e. approximately 381 males are employed in the tertiary sector. The fourth table  gives  combined male averages across all three sectors. We get Male_Primary_Avg as 369.2, Male_Secondary _Avg as 250.0167 and Male_Tertiary_Avg  as 380.6333.The fifth  table  gives  combined female averages across all three sectors. We get Female_Primary_Avg as 501.65, Female_Secondary _Avg as 206.5333 and Female_Tertiary_Avg AS 291.65.
+
+#This infers that men are more concentrated in-service sector followed by primary sector and then secondary sector. Women are more concentrated in primary sector, followed by tertiary sector and then secondary sector.
+
+
+#Now we calculate the standard deviation, i.e., how spread out the data is around the mean. We use the sd() function for the same. We have used the summarise() function, the pipe operator, and na.rm=TRUE here as well.
+
+
+
+Employment_data %>%
+  summarise(Male_Primary_SD = sd(`Male Primary  Sector ALL`, na.rm = TRUE),
+            Male_Secondary_SD = sd(`Male Secondary  Sector ALL`, na.rm = TRUE),
+            Male_Tertiary_SD = sd(`Male Tertiary  Sector ALL`, na.rm = TRUE))
+```
+```{r}
+Employment_data %>%
+  summarise(Female_Primary_SD = sd(`Female Primary  Sector ALL`, na.rm = TRUE),
+            Female_Secondary_SD = sd(`Female Secondary  Sector ALL`, na.rm = TRUE),
+            Female_Tertiary_SD = sd(`Female Tertiary Sector ALL`, na.rm = TRUE))
+```
+```{r}
+#Both Genders show least amount of variation at the secondary level, hence outcomes are more uniform. The primary and tertiary sectors show high variation, especially for females, suggesting that female outcomes are more uneven.Both genders follow the same pattern that is primarily is the most scattered, secondary is most stable, while tertiary is moderately scattered.
+
+#Other summary statistics we learned in class are min, max and quantile functions
+
+Employment_data %>%
+  summarise(Male_Primary_min = min(`Male Primary  Sector ALL`, na.rm = TRUE),
+            Male_Secondary_min = min(`Male Secondary  Sector ALL`, na.rm = TRUE),
+            Male_Tertiary_min = min(`Male Tertiary  Sector ALL`, na.rm = TRUE))
+
+```
+```{r}
+Employment_data %>%
+  summarise(Female_Primary_min = min(`Female Primary  Sector ALL`, na.rm = TRUE),
+            Female_Secondary_min = min(`Female Secondary  Sector ALL`, na.rm = TRUE),
+            Female_Tertiary_min = min(`Female Tertiary Sector ALL`, na.rm = TRUE))
+```
+```{r}
+Employment_data %>%
+  summarise(Male_Primary_max = max(`Male Primary  Sector ALL`, na.rm = TRUE),
+            Male_Secondary_max = max(`Male Secondary  Sector ALL`, na.rm = TRUE),
+            Male_Tertiary_max = max(`Male Tertiary  Sector ALL`, na.rm = TRUE))
+```
+
+
+```{r}
+Employment_data %>%
+  summarise(Female_Primary_max = max(`Female Primary  Sector ALL`, na.rm = TRUE),
+            Female_Secondary_max = max(`Female Secondary  Sector ALL`, na.rm = TRUE),
+            Female_Tertiary_max = max(`Female Tertiary Sector ALL`, na.rm = TRUE))
+```
+```{r}
+Employment_data %>%
+  summarise(Male_Primary_Q = quantile(`Male Primary  Sector ALL`, probs = c(0.25, na.rm = TRUE)),
+            Male_Secondary_Q = quantile(`Male Secondary  Sector ALL`, probs = c(0.25, na.rm = TRUE)),
+            Male_Tertiary_Q = quantile(`Male Tertiary  Sector ALL`, probs = c(0.25, na.rm = TRUE)))
+
+```
+
+
+```{r}
+Employment_data %>%
+  summarise( Female_Primary_Q = quantile(`Female Primary  Sector ALL`, probs = c(0.25, na.rm = TRUE)),
+            Female_Secondary_Q = quantile(`Female Secondary  Sector ALL`, probs = c(0.25, na.rm = TRUE)),
+            Female_Tertiary_Q = quantile(`Female Tertiary Sector ALL`, probs = c(0.25, na.rm = TRUE)))
+```
+```{r}
+#For finding the minimum and maximum values, we use the min() function to find the smallest value in the column and use the max() function to find the largest value, respectively. These values tell us the range of employment in all sectors.  The range that is the spread between Min and Max value. Phone is in primary sector the spread is wide, secondary sector spread is narrow and industry sector the spread is moderate. For females. In primary sector, the spread is very tight, security sector is narrow and it's tertiary sector is moderate. Regarding the minimum values for meals, the minimums are higher (47, 100, 122), so floor level is higher. For females, the minimum is lower (78, 66, 42). Females show lower outcomes than males especially in secondary and tertiary sectors.
+
+#Quantiles are values that divide the dataset into equal groups or portions. We use the quantile function to calculate the same. Here, prob (0.25) gives us the first quartile, which shows the value below which 25% of the data lies.The results show that both genders are most consistent at secondary sector, but the primary and the tertiary sector show large inequalities, especially for females.
+#Creating new columns by adding all the three sectors for each gender
+
+Employment_data <- Employment_data %>%
+  mutate(Male_Total_Employment = `Male Primary  Sector ALL` + `Male Secondary  Sector ALL` + `Male Tertiary  Sector ALL`,
+  Female_Total_Employment = `Female Primary  Sector ALL` + `Female Secondary  Sector ALL` + `Female Tertiary Sector ALL`,
+  Total_Employment_All = Male_Total_Employment + Female_Total_Employment)
+
+
+#Here, pipe operator %>%  and mutate() functions are used. Pipe operator chain functions in the order we want them to run. The output of one step becomes the input of the next. It passes the output of (Employment_data) as the first argument to the function mutate(). Employment_data is being passed into mutate(), so all changes inside mutate() are applied to this data set.
+#Mutate() adds new columns or modifies existing columns in the data frame, preserving the existing data. It does not remove the existing columns. The + inside mutate() adds values from multiple columns to calculate totals. Here, three new columns are being created. Male_Total_Employment which is the sum of employment in male primary, secondary, and tertiary sectors. Female_Total_Employment which is the sum of employment in female primary, secondary, and tertiary sectors and Total_Employment_All, that is the total employment combining male and female totals.
+
+Employment_data %>%
+  summarise(Male_Total_Mean = mean(Male_Total_Employment, na.rm = TRUE),
+            Female_Total_Mean = mean(Female_Total_Employment, na.rm = TRUE),
+            Overall_Total_Mean = mean(Total_Employment_All, na.rm = TRUE))
+```
+```{r}
+# Mean analysis for total employment
+#Here, the functions used are pipe operator%>% , summarise(), and mean(). Summarise() collapses multiple values into a single summary statistic for each group. Mean() is a function that calculates the average of numeric values. We've done the summary statistics analysis again for this new created column with all the sectors' data.
+
+##For this code, the output is a tibble with one row and three columns.
+#The male total mean is 999.85 and female total mean is 999.8333, where male total is greater than female total.Overall mean is 1999.683 which is greater than both male and female means.
+
+Employment_data %>%
+  summarise(Male_Total_SD = sd(Male_Total_Employment, na.rm = TRUE),
+            Female_Total_SD = sd(Female_Total_Employment, na.rm = TRUE),
+            Overall_Total_SD = sd(Total_Employment_All, na.rm = TRUE))
+```
+```{r}
+# Standard deviation for total employment
+#The functions used in this code are pipe operator %>% , summarise() and sd(). sd() calculates the standard deviation of a numeric vector. Pipe operator %>%  passes the output from (Employment_data) into the function (summarise(). Inside the summarise(), we are creating three new columns, Male_Total_SD, Female_Total_SD and Overall_Total_SD. In this code, sd(Male_Total_Employment, na.rm = TRUE) computes SD of the Male_Total_Employment column. sd(Female_Total_Employment, na.rm = TRUE) computes SD of the Female_Total_Employment column and sd(Total_Employment_All, na.rm = TRUE)  computes SD of the total employment column.
+
+#Here, the output is a tibble with 1 row and 3 columns. Male total sd is 0.9884931 and femal total sd is 1.250988. Here, female sd is greater than male sd. The overall total sd is 2.029375, which shows that overall total is more compared to both sd's.
+
+Employment_data %>%
+  summarise(Male_Total_Min = min(Male_Total_Employment, na.rm = TRUE),
+            Male_Total_Max = max(Male_Total_Employment, na.rm = TRUE),
+            Female_Total_Min = min(Female_Total_Employment, na.rm = TRUE),
+            Female_Total_Max = max(Female_Total_Employment, na.rm = TRUE),
+            Overall_Total_Min = min(Total_Employment_All, na.rm = TRUE),
+            Overall_Total_Max = max(Total_Employment_All, na.rm = TRUE))
+```
+
+```{r}
+# Min and Max for total employment
+#In this code, the functions used are pipe operator %>% , summarise(), min() and max(). Min() finds the minimum value of a numeric column and max() finds the maximum value of a numeric column. 
+
+#Here,the output is a data frame with one row and six columns.
+#Each column contains the minimum or maximum value from the respective variables. Male total min is 995 which is greater than female total min 992 and male total max is equal to female total max. The overall total min of both male and female is 1987 and the total max of male and female together is 2003.
+# Filter for Urban areas and analysing urban employment data
+
+Urban_Employment <- Employment_data %>%
+  filter(`Urban/Rural` == "Urban")
+
+Urban_Employment %>%
+  summarise(Urban_Male_Primary_Mean = mean(`Male Primary  Sector ALL`, na.rm = TRUE),
+            Urban_Male_Secondary_Mean = mean(`Male Secondary  Sector ALL`, na.rm = TRUE),
+            Urban_Male_Tertiary_Mean = mean(`Male Tertiary  Sector ALL`, na.rm = TRUE),
+            Urban_Female_Primary_Mean = mean(`Female Primary  Sector ALL`, na.rm = TRUE),
+            Urban_Female_Secondary_Mean = mean(`Female Secondary  Sector ALL`, na.rm = TRUE),
+            Urban_Female_Tertiary_Mean = mean(`Female Tertiary Sector ALL`, na.rm = TRUE),
+            Urban_Male_Total_Mean = mean(Male_Total_Employment, na.rm = TRUE),
+            Urban_Female_Total_Mean = mean(Female_Total_Employment, na.rm = TRUE))
+```
+```{r}
+#Filter() is a function that keeps rows that meet certain conditions. Through this function, from the original dataset (employment_data), only the urban employment records are kept. These are stored in a new dataset called Urban_Employment. Before filter(), dataset containing both urban and rural employment records were included.Mean() is used multiple times in the code to calculate averages for different employment categories. (na.rm = TRUE) ensures that missing values (NA) are ignored while calculating the mean.Inside summarise() is defined the new summary columns. Here, Urban_Male_Primary_Mean calculates average value of Male Primary Sector ALL for urban areas, Urban_Male_Secondary_Mean calculates average value of Male Secondary Sector ALL for urban areas, Urban_Male_Tertiary_Mean calculates average value of Male Tertiary Sector ALL for urban areas, Urban_Female_Primary_Mean calculates average value of Female Primary Sector ALL for urban areas, Urban_Female_Secondary_Mean calculates average value of Female Secondary Sector ALL for urban areas, Urban_Female_Tertiary_Mean calculates average value of Female Tertiary Sector ALL for urban areas, Urban_Male_Total_Mean calculates average of Male_Total_Employment for urban areas and Urban_Female_Total_Mean calculates average of Female_Total_Employment for urban areas. 
+
+Rural_Employment <- Employment_data %>%
+  filter(`Urban/Rural` == "Rural")
+
+
+Rural_Employment %>%
+  summarise(Rural_Male_Primary_Mean = mean(`Male Primary  Sector ALL`, na.rm = TRUE),
+            Rural_Male_Secondary_Mean = mean(`Male Secondary  Sector ALL`, na.rm = TRUE),
+            Rural_Male_Tertiary_Mean = mean(`Male Tertiary  Sector ALL`, na.rm = TRUE),
+            Rural_Female_Primary_Mean = mean(`Female Primary  Sector ALL`, na.rm = TRUE),
+            Rural_Female_Secondary_Mean = mean(`Female Secondary  Sector ALL`, na.rm = TRUE),
+            Rural_Female_Tertiary_Mean = mean(`Female Tertiary Sector ALL`, na.rm = TRUE),
+            Rural_Male_Total_Mean = mean(Male_Total_Employment, na.rm = TRUE),
+            Rural_Female_Total_Mean = mean(Female_Total_Employment, na.rm = TRUE))
+```
+```{r}
+#The output of this code is a tibble with 1 row and 8 columns. Each cell shows the average employment for each group. Here, urban male primary mean is 665.7667 and that of secondary is 160.2333 and tertiary is of 173.9333. Urban female primary mean is 822.5 and 105.2667 and 72.23333 are the mean values of secondary and tertiary, respectively. The urban male total mean is 999.9333 which is lesser than the urban female total mean 1000.
+```
+
+```{r}
+# ---- 1. Average employment by gender and sector ----
+avg_sector <- Employment_data %>%
+  summarise(
+    Male_Primary = mean(`Male Primary  Sector ALL`, na.rm = TRUE),
+    Male_Secondary = mean(`Male Secondary  Sector ALL`, na.rm = TRUE),
+    Male_Tertiary = mean(`Male Tertiary  Sector ALL`, na.rm = TRUE),
+    Female_Primary = mean(`Female Primary  Sector ALL`, na.rm = TRUE),
+    Female_Secondary = mean(`Female Secondary  Sector ALL`, na.rm = TRUE),
+    Female_Tertiary = mean(`Female Tertiary Sector ALL`, na.rm = TRUE)
+  ) %>%
+  pivot_longer(cols = everything(), names_to = "Category", values_to = "Average")
+
+ggplot(avg_sector, aes(x = Category, y = Average, fill = Category)) +
+  geom_col() +
+  theme_minimal() +
+  labs(
+    title = "Average Employment by Gender and Sector",
+    x = "Sector",
+    y = "Average Employment"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+#In this code, for data summarisation, the functions used are pipe operator %>%, summarise() and mean(). Pipe operator is used throughout the code to connect multiple operations. Summarise() function collapses the entire dataset into summary statistics. Inside it, each line computes the mean of a column. Mean() calculates the arithmetic mean of a numeric vector.
+#Through this code, the whole employment_data dataset is collapsed into one single row, with six columns, Male_Primary, Male_Secondary, Male_Tertiary, Female_Primary, Female_Secondary, Female_Tertiary. Each column holds the average employment value for that gender-sector combination.
+#The function pivot_longer() is used for reshaping data. This function lengthens data by increasing the number of rows and decreasing the number of columns. The effect of this function is through cols = everything() which takes all columns created in summarise(), names_to = "Category" in which the old column names (like Male_Primary) are placed into a new column called "Category" and values_to = "Average" makes the values (the means) go into a new column "Average".
+#For plotting the data, the functions ggplot(), aes(), geom_col(), theme_minimal(), labs(), theme() and element_text() are used. Ggplot() is a function from the ggplot2 package in R which is a powerful and widely used tool for creating data visualizations. Gg stands for "Grammar of Graphics", a systematic approach to building graphs in layers. Aes() is a function that maps variables from your data to visual properties(aesthetics) of the plot.
+#Here, we are initializing the plot with a dataset (avg_sector) and aesthetic mappings (aes), with x = Category where x-axis shows categories (e.g., "Male_Primary"), y = Average where  y-axis shows average values and fill = Category where bars are filled with different colors by category.
+#Geom_col() is a function used to create bar charts where the height of the bars represents specific values in the data. Here, this function creates bar plots where the heights of the bars are determined by the data (Average).
+#Theme_minimal() is a predefined theme function that modifies the non-data components of a plot. Its main purpose is to give a clean, minimalistic look to the plots. It removes removes heavy gridlines and clutter. 
+#Labs() function add labels. Tat is, 'title' for the main title of the graph. 'x, y' for the axis labels.
+#The functions theme() and element_text() customizes text appearance. Here, it rotates x-axis labels by 45 degrees (angle = 45) and adjusts justification (hjust = 1) so labels don’t overlap.
+
+#Therefore, the code produces a bar chart where, X-axis shows six categories (Male/Female × Primary/Secondary/Tertiary), Y-axis shows average employment values, Bars are colored by category and Labels are rotated to be readable. The plot has a clean, minimalistic style.
+#The final output is a ggplot bar chart showing the average employment by gender and sector, visually comparing categories. It is shown that average employment of female primary is the greatest and average employment of female secondary is the least.
+
+
+
+# ---- 2. Boxplots: Distribution of employment in each sector ----
+Employment_data %>%
+  pivot_longer(cols = c(`Male Primary  Sector ALL`, `Male Secondary  Sector ALL`, `Male Tertiary  Sector ALL`,
+                        `Female Primary  Sector ALL`, `Female Secondary  Sector ALL`, `Female Tertiary Sector ALL`),
+               names_to = "Sector", values_to = "Employment") %>%
+  ggplot(aes(x = Sector, y = Employment, fill = Sector)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(
+    title = "Distribution of Employment by Sector and Gender",
+    x = "Sector",
+    y = "Employment"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+#Here, in pivot_longer() function, (“cols =”) specifies which columns to collapse (all Male/Female sector columns), (names_to = “Sector”) creates a new column called Sector containing the column names, and (values_to = “Employment”) creates a new column called Employment containing the corresponding numeric values. Instead of multiple columns for sectors, the dataset is transformed into a tidy long format, making it suitable for plotting in ggplot. #The function ggplot() initializes a ggplot object, defining what variables to map to the axes and aesthetics. Here, aes(x = Sector, y = Employment, fill = Sector) defines maps in which Sector shows x-axis, Employment shows y-axis and fill = Sector shows fills each box with a different color based on sector. This prepares the base plot. At this point, nothing is drawn until we add a geometry layer(boxplot). #The function geom_boxplot() creates a boxplot for each sector to show the distribution of employment values. #The theme_minimal() function applies a minimalistic theme to the plot. It removes background grid lines and unnecessary visual clutter, giving a cleaner look. #labs() adds labels to the plot, where ‘title’ adds main title on top of the plot, ‘x’ names the x-axis “Sector” and ‘y’ names the y-axis “Employment”. #The theme() customizes theme elements.It rotates x-axis text labels by 45 degrees to prevent overlap and hjust = 1 ensures labels are right-aligned and readable.
+
+#The final output of the code is a boxplot visualization showing the distribution of employment values across Male Primary Sector, Male Secondary Sector, Male Tertiary Sector, Female Primary Sector, Female Secondary Sector and Female Tertiary Sector. Each sector is represented by a different color. The x-axis shows the sector categories, the y-axis shows employment values and the title and labels make the plot descriptive and easy to understand.
+
+
+# ---- 3. Urban vs Rural averages ----
+urban_rural_avg <- Employment_data %>%
+  group_by(`Urban/Rural`) %>%
+  summarise(
+    Male_Primary = mean(`Male Primary  Sector ALL`, na.rm = TRUE),
+    Male_Secondary = mean(`Male Secondary  Sector ALL`, na.rm = TRUE),
+    Male_Tertiary = mean(`Male Tertiary  Sector ALL`, na.rm = TRUE),
+    Female_Primary = mean(`Female Primary  Sector ALL`, na.rm = TRUE),
+    Female_Secondary = mean(`Female Secondary  Sector ALL`, na.rm = TRUE),
+    Female_Tertiary = mean(`Female Tertiary Sector ALL`, na.rm = TRUE),
+    Male_Total = mean(Male_Total_Employment, na.rm = TRUE),
+    Female_Total = mean(Female_Total_Employment, na.rm = TRUE)
+  ) %>%
+  pivot_longer(-`Urban/Rural`, names_to = "Category", values_to = "Average")
+
+ggplot(urban_rural_avg, aes(x = Category, y = Average, fill = `Urban/Rural`)) +
+  geom_col(position = "dodge") +
+  theme_minimal() +
+  labs(
+    title = "Urban vs Rural Average Employment",
+    x = "Category",
+    y = "Average Employment"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+#The pipe operator is used to pass the result of one function to the next as input. The dataset ‘Employment_data’ is directly passed into ggplot() without having to write ggplot(Employment_data, ...).Now we use ggplot()for visualization of our dataset " Employment_data". ggplot() is a component of ggplot2 package. aes() function is used to tell R how to amp columns from dataset into visual elements of our plot. The x-axis represents total male employment, y-axis represents total female employment and color= Urban/ Rural means that points will be colored differently for rural and urban observations. This lets us access relationship between male and female employment while also distinguishing between urban and rural using color.geom_point() helps to draw scatterplot points and makes sure that each point is of such size that its visible e.g. here  size=3 makes sure all points are of medium size and alpha=0.7 makles points are slightly transparent.theme_minimal() applies clean style to the plot and labs() adds custom labels for title, x- axis and the y-axis.
+
+#We can see a tight vertical cluster.that is formed by the points showing that male and female total employment are positively correlated. This means as male employment increases, the female employment also increases although the range is narrow.The female employment ranges roughly between 992.5 to 1002.5 and for male employment it ranges roughly between  996 to 1002. This shows that total employment numbers are nearly identical across both genders and have very small difference.The graph shows that both urban and rural points are closely clustered together. This supports the earlier bar charts implication that while category wise differences exist for (primary, secondary and tertiary), but the overall total employment across urban and rural regions is quite similar.
+
+
+
+# ---- 4. Scatterplot: Male vs Female employment ----
+Employment_data %>%
+  ggplot(aes(x = Male_Total_Employment, y = Female_Total_Employment, color = `Urban/Rural`)) +
+  geom_point(size = 3, alpha = 0.7) +
+  theme_minimal() +
+  labs(
+    title = "Scatterplot of Male vs Female Employment",
+    x = "Male Total Employment",
+    y = "Female Total Employment"
+  )
+
+
+# 5. Histogram : Total Male/Female Employment
+Employment_data %>%
+  pivot_longer(cols = c(Male_Total_Employment, Female_Total_Employment), 
+               names_to = "Gender", values_to = "TotalEmployment") %>%
+  ggplot(aes(x = TotalEmployment, fill = Gender)) +
+  geom_histogram(alpha = 0.6, bins = 20, position = "identity") +
+  theme_minimal() +
+  labs(
+    title = "Histogram of Total Male and Female Employment",
+    x = "Total Employment",
+    y = "Count"
+  )
+```
+
+
+
+
+
+
